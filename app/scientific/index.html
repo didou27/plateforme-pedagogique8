@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirecting…</title>
+  <script>
+    (function () {
+      var clean = location.pathname.replace(/\/$/, '');
+      var parent = clean.slice(0, clean.lastIndexOf('/') + 1);
+      var target = new URL(parent + 'index.html', location.href);
+      var current = new URLSearchParams(location.search);
+      target.searchParams.set('view', 'scientific');
+      current.forEach(function (value, key) {
+        if (key !== 'view') target.searchParams.set(key, value);
+      });
+      target.hash = location.hash;
+      location.replace(target.href);
+    }());
+  </script>
+</head>
+<body>
+  <p>Redirecting to <a href="../index.html?view=scientific">scientific</a>…</p>
+</body>
+</html>

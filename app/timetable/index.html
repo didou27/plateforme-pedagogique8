@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#123f36" />
+  <title>Pedagogical Management Platform for the Preparatory Cycle</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="institution-header">
+    <button class="mobile-menu" id="mobileMenu" aria-label="Open navigation">Menu</button>
+    <div class="crest" aria-hidden="true">ESE</div>
+    <span class="national-flag" role="img" aria-label="Algeria">🇩🇿</span>
+    <div class="institution-copy">
+      <strong>People's Democratic Republic of Algeria</strong>
+      <span>Ministry of Higher Education and Scientific Research</span>
+      <span>Higher School of Economics Oran</span>
+    </div>
+    <div class="academic-badge"><span>Academic year</span><b>2026 / 2027</b></div>
+  </header>
+
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand-block">
+        <span class="brand-kicker">Preparatory cycle</span>
+        <div class="brand-title"><h1>Pedagogical Management</h1><span class="brand-flag" role="img" aria-label="Algeria">🇩🇿</span></div>
+      </div>
+      <nav aria-label="Main navigation">
+        <button class="nav-item active" data-view="timetable"><span class="nav-icon">▦</span><span>Timetable</span></button>
+        <button class="nav-item" data-view="hours"><span class="nav-icon">◷</span><span>Teaching Hours</span></button>
+        <div class="nav-group">
+          <div class="nav-group-label"><span class="nav-icon student-main-icon">♟</span><span>Students</span></div>
+          <button class="nav-item sub-nav-item" data-view="studentRepresentatives"><span class="nav-icon">★</span><span>Student Representatives</span></button>
+          <button class="nav-item sub-nav-item" data-view="studentAbsences"><span class="nav-icon">A</span><span>Student Absences</span></button>
+        </div>
+        <button class="nav-item" data-view="teachers"><span class="nav-icon">T</span><span>Teachers</span></button>
+        <button class="nav-item" data-view="coordination"><span class="nav-icon">◎</span><span>Coordination Committees</span></button>
+        <button class="nav-item" data-view="scientific"><span class="nav-icon">◇</span><span>Scientific Committee</span></button>
+        <button class="nav-item" data-view="competition"><span class="nav-icon">↗</span><span>Second Cycle Admission</span></button>
+      </nav>
+      <div class="sidebar-note" id="storageStatus"><b>Checking storage…</b><span>Connecting to persistent storage.</span></div>
+    </aside>
+
+    <main class="main-content">
+      <section id="timetableView" class="view active">
+        <div class="page-heading">
+          <div><span class="eyebrow">Schedule management</span><h2>Timetable</h2><p>Review, filter and safely edit the master timetable.</p></div>
+          <div class="heading-actions"><button class="button secondary" id="resetSchedule">Reset imported data</button><button class="button primary" id="newSession">+ Add session</button></div>
+        </div>
+        <div class="metrics" id="scheduleMetrics"></div>
+        <div class="panel filters-panel timetable-filters">
+          <div class="field"><label for="levelFilter">Academic level</label><select id="levelFilter"></select></div>
+          <div class="field"><label for="semesterFilter">Semester</label><select id="semesterFilter"></select></div>
+          <div class="field"><label for="audienceFilter">Section / group</label><select id="audienceFilter"></select></div>
+          <div class="field"><label for="moduleFilter">Research by module</label><div class="search-control"><span class="search-icon module-icon">M</span><input id="moduleFilter" list="moduleSearchList" placeholder="First letters…" /></div></div>
+          <div class="field"><label for="teacherFilter">Research by teacher</label><div class="search-control"><span class="search-icon teacher-icon">T</span><input id="teacherFilter" list="teacherSearchList" placeholder="First letters…" /></div></div>
+          <div class="field"><label for="roomFilter">Research by room</label><div class="search-control"><span class="search-icon room-icon">R</span><input id="roomFilter" list="roomSearchList" placeholder="e.g. S 04" /></div></div>
+          <datalist id="moduleSearchList"></datalist><datalist id="teacherSearchList"></datalist><datalist id="roomSearchList"></datalist>
+        </div>
+        <div class="panel timetable-toolbar">
+          <div class="schedule-view-tabs" aria-label="Timetable views">
+            <button class="schedule-view-tab active" data-schedule-view="days"><span class="view-icon day-view-icon">D</span>Days view</button>
+            <button class="schedule-view-tab" data-schedule-view="courses"><span class="view-icon lecture-only-icon">C</span>Courses only</button>
+            <button class="schedule-view-tab" data-schedule-view="sections"><span class="view-icon section-view-icon">S</span>Sections / Groups</button>
+            <button class="schedule-view-tab" data-schedule-view="rooms"><span class="view-icon rooms-view-icon">R</span>Rooms view</button>
+            <button class="schedule-view-tab" data-schedule-view="available"><span class="view-icon free-view-icon">✓</span>Available rooms</button>
+          </div>
+          <div class="view-export-actions">
+            <span id="activeViewLabel">Days view</span>
+            <button class="button export-excel" id="exportExcel"><span>▦</span> Excel</button>
+            <button class="button export-excel" id="exportTeacherLoad" title="Export each teacher's pedagogical load"><span>▦</span> Teacher load</button>
+            <button class="button export-pdf" id="exportPdf"><span>PDF</span> PDF</button>
+            <button class="button export-zip" id="exportModuleZip"><span>ZIP</span> Modules ZIP</button>
+          </div>
+        </div>
+        <div class="schedule-wrap panel">
+          <div class="schedule-legend" id="scheduleLegend"><span><i class="dot lecture"></i> Lecture</span><span><i class="dot td"></i> Tutorial</span><span><i class="dot tp"></i> Practical</span><span class="hint">Select a session to edit</span></div>
+          <div id="scheduleGrid" class="schedule-grid"></div>
+        </div>
+      </section>
+
+      <section id="hoursView" class="view">
+        <div class="page-heading"><div><span class="eyebrow">Workload control</span><h2>Professors' Teaching Hours</h2><p>Calculated directly from the current timetable and ranked from highest to lowest load.</p></div><div class="heading-actions"><button class="button secondary" id="shareHours">Copy share link</button><button class="button export-excel" id="exportHours"><span>▦</span> Export Excel</button></div></div>
+        <div class="rule-callout"><b>Calculation:</b> each lecture, including repeated lectures, = 2h15; each TD or TP = 1h30. Totals below 9h are flagged in red.</div>
+        <div class="panel filters-panel hours-filters"><div class="field"><label for="hoursDepartment">Department</label><select id="hoursDepartment"></select></div><div class="field"><label for="hoursSemester">Semester</label><select id="hoursSemester"></select></div><div class="field"><label for="hoursType">Module type</label><select id="hoursType"><option value="all">All module types</option><option value="Cours">Lecture</option><option value="TD">Tutorial (TD)</option><option value="TP">Practical (TP)</option></select></div><div class="field grow"><label for="hoursSearch">Find professor</label><input id="hoursSearch" placeholder="Type a name" /></div></div>
+        <div class="panel table-panel"><table><thead><tr><th>Professor</th><th>Modules</th><th>Lectures</th><th>TD / TP</th><th>Total load</th><th>Status</th></tr></thead><tbody id="hoursBody"></tbody></table></div>
+      </section>
+
+      <section id="studentRepresentativesView" class="view records-view"></section>
+      <section id="studentAbsencesView" class="view records-view"></section>
+      <section id="teachersView" class="view records-view"></section>
+      <section id="coordinationView" class="view records-view"></section>
+      <section id="scientificView" class="view records-view"></section>
+      <section id="competitionView" class="view"></section>
+    </main>
+  </div>
+
+  <dialog id="sessionDialog" class="modal">
+    <form method="dialog" id="sessionForm">
+      <div class="modal-head"><div><span class="eyebrow">Conflict-safe editor</span><h3 id="sessionDialogTitle">Edit session</h3></div><button class="icon-button" value="cancel" aria-label="Close">×</button></div>
+      <input type="hidden" id="sessionId" />
+      <div class="form-grid">
+        <div class="field full"><label for="editDepartment">Department</label><input id="editDepartment" required placeholder="Preparatory Cycle" /></div>
+        <div class="field"><label for="editLevel">Academic level</label><select id="editLevel" required></select></div>
+        <div class="field"><label for="editSemester">Semester</label><select id="editSemester" required></select></div>
+        <div class="field"><label for="editSection">Section</label><input id="editSection" required placeholder="Section 01" /></div>
+        <div class="field"><label for="editGroup">Group (blank for lecture)</label><input id="editGroup" placeholder="Group 01" /></div>
+        <div class="field"><label for="editDay">Day</label><select id="editDay" required></select></div>
+        <div class="field"><label for="editTime">Time slot</label><select id="editTime" required></select></div>
+        <div class="field full audience-availability"><label>Free times for this section or group</label><div id="audienceFreeSlots" class="free-slot-list"></div><small id="audienceRuleNote"></small></div>
+        <div class="field full"><label for="editModule">Module</label><input id="editModule" list="moduleList" required /></div>
+        <div class="field"><label for="editType">Session type</label><select id="editType"><option>Cours</option><option>TD</option><option>TP</option></select></div>
+        <div class="field"><label for="editProfessor">Professor</label><input id="editProfessor" list="professorList" required /></div>
+        <div class="field full"><label for="editRoom">Vacant & eligible room</label><select id="editRoom" required></select><small id="vacancyNote"></small></div>
+      </div>
+      <datalist id="moduleList"></datalist><datalist id="professorList"></datalist>
+      <div id="formError" class="form-error" role="alert"></div>
+      <div class="modal-actions"><button type="button" class="button danger" id="deleteSession">Delete</button><span></span><button class="button secondary" value="cancel">Cancel</button><button type="submit" class="button primary">Save session</button></div>
+    </form>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="schedule-data.js"></script><script src="teachers-data.js"></script><script src="app.js"></script>
+</body>
+</html>
