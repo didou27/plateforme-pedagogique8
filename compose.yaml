@@ -1,0 +1,11 @@
+services:
+  pedagogical-platform:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "${PORT:-3000}:3000"
+    volumes:
+      - ./storage:/app/storage
+    environment:
+      HOST: 0.0.0.0
+      PORT: 3000

@@ -1,0 +1,5 @@
+node_modules/
+storage/platform-data.json
+storage/uploads/
+desktop.ini
+.vscode/
